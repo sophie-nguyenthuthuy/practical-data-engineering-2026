@@ -111,3 +111,4 @@ Spark, Druid, Superset, Jupyter-in-pipeline, Helm. The original's Jupyter
 integration via Papermill was clever but is mostly redundant when assets
 are already versioned, typed Python — run exploration in plain notebooks
 against the Iceberg catalog instead.
+# practical-data-engineering-2026
