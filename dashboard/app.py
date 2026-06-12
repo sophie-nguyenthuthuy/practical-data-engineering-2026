@@ -5,8 +5,8 @@ import altair as alt
 import pandas as pd
 import streamlit as st
 
-from re_pipeline.iceberg_utils import get_catalog
 from re_pipeline.config import NAMESPACE
+from re_pipeline.iceberg_utils import get_catalog
 
 st.set_page_config(page_title="Real Estate Lakehouse", layout="wide")
 st.title("🏠 Swiss Real Estate — Lakehouse Dashboard")
