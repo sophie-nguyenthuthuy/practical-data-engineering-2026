@@ -1,10 +1,11 @@
 """One-shot seed outside Dagster. `python -m re_pipeline.seed`."""
 from __future__ import annotations
 
+from dagster import materialize
+
 from .assets.bronze import bronze_listings
 from .assets.gold import gold_city_stats, gold_price_bands
 from .assets.silver import silver_listings, silver_price_history
-from dagster import materialize
 
 if __name__ == "__main__":
     result = materialize(
