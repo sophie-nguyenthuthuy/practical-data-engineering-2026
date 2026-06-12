@@ -1,7 +1,7 @@
 """Thin wrapper around pyiceberg + DuckDB for the Dagster assets."""
 from __future__ import annotations
 
-from typing import Iterable
+from collections.abc import Iterable
 
 import duckdb
 import pyarrow as pa
