@@ -13,11 +13,10 @@ Both yield identical schemas so downstream Iceberg tables don't care.
 """
 from __future__ import annotations
 
-import hashlib
 import random
-from datetime import datetime, timezone
+from collections.abc import Iterator
+from datetime import UTC, datetime
 from pathlib import Path
-from typing import Iterator
 
 import dlt
 from bs4 import BeautifulSoup
@@ -64,9 +63,9 @@ def synthetic_listings(
     """
     fake = Faker()
     Faker.seed(seed)
-    random.seed(seed + datetime.now(timezone.utc).toordinal())
+    random.seed(seed + datetime.now(UTC).toordinal())
 
-    scraped_at = datetime.now(timezone.utc)
+    scraped_at = datetime.now(UTC)
     for i in range(n_listings):
         city, lat, lon = random.choice(SWISS_CITIES)
         ptype = random.choice(PROPERTY_TYPES)
@@ -110,7 +109,7 @@ def scrape_listings_from_html(html_path: str | Path) -> Iterator[dict]:
     """
     html = Path(html_path).read_text(encoding="utf-8")
     soup = BeautifulSoup(html, "html.parser")
-    scraped_at = datetime.now(timezone.utc)
+    scraped_at = datetime.now(UTC)
     for node in soup.select("div.listing"):
         row = {
             "id": node.get("data-id"),
