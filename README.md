@@ -1,14 +1,12 @@
 # Practical Data Engineering — 2026 edition
 
-![CI](https://github.com/OWNER/REPO/actions/workflows/ci.yml/badge.svg)
+![CI](https://github.com/sophie-nguyenthuthuy/practical-data-engineering-2026/actions/workflows/ci.yml/badge.svg)
 ![Python](https://img.shields.io/badge/python-3.12-blue)
 ![License](https://img.shields.io/badge/license-MIT-green)
 
 A modern, laptop-scale lakehouse that delivers the same end-to-end story as
 Simon Späti's 2021 "Building a Data Engineering Project in 20 Minutes" — but
 without Spark, Druid, Superset, Helm, or Kubernetes.
-
-> Update the `OWNER/REPO` in the CI badge above after you push to GitHub.
 
 ```
 scrape ─► dlt ─► Iceberg @ MinIO ─► DuckDB transforms ─► Streamlit BI
@@ -39,7 +37,8 @@ scrape ─► dlt ─► Iceberg @ MinIO ─► DuckDB transforms ─► Streaml
 ## Quickstart
 
 ```bash
-cd ~/practical-data-engineering-2026
+git clone https://github.com/sophie-nguyenthuthuy/practical-data-engineering-2026.git
+cd practical-data-engineering-2026
 make up
 # once containers are healthy:
 #   Dagster    http://localhost:3100
@@ -49,7 +48,8 @@ make up
 
 In Dagster, click **Materialize all** on the asset graph — you'll see
 `bronze_listings → silver_listings → silver_price_history → gold_*` run
-against Iceberg on MinIO. Then refresh Streamlit.
+against Iceberg on MinIO. Then refresh Streamlit. First full materialization
+runs in a few minutes on a laptop.
 
 To reset everything:
 
@@ -89,6 +89,16 @@ bronze_listings  (Iceberg, merge on id)
 Every asset is an Iceberg table on MinIO, with a SQL-backed Iceberg catalog
 (SQLite in dev; swap for REST/Nessie/Glue in prod — same code).
 
+## Troubleshooting
+
+- **Containers unhealthy after `make up`** — MinIO needs a few seconds before
+  Dagster can reach it; `docker compose ps` and re-check. If ports 3100/8501/9101
+  are taken, edit the port mappings in `docker-compose.yml`.
+- **`pyiceberg` catalog errors on re-run** — stale SQLite catalog state;
+  `make reset` clears MinIO buckets and the catalog.
+- **dlt schema errors after editing the source** — delete the dlt state for the
+  pipeline (`~/.dlt`) or bump the pipeline name.
+
 ## Scraping ethically
 
 The `synthetic_listings` resource generates realistic data with Faker —
@@ -111,4 +121,7 @@ Spark, Druid, Superset, Jupyter-in-pipeline, Helm. The original's Jupyter
 integration via Papermill was clever but is mostly redundant when assets
 are already versioned, typed Python — run exploration in plain notebooks
 against the Iceberg catalog instead.
-# practical-data-engineering-2026
+
+## License
+
+MIT
