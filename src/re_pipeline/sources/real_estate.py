@@ -13,6 +13,7 @@ Both yield identical schemas so downstream Iceberg tables don't care.
 """
 from __future__ import annotations
 
+import hashlib
 import random
 from collections.abc import Iterator
 from datetime import UTC, datetime
